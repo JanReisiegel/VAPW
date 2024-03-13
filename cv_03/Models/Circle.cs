@@ -24,6 +24,7 @@ namespace cv_03.Models
 
         internal override void Draw(Graphics graphics)
         {
+            base.DrawPoint(graphics);
 			graphics.DrawEllipse(new Pen(Color.Aqua, 15), OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
         }
     }

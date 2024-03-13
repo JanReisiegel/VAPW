@@ -35,6 +35,7 @@ namespace cv_03.Models
 
 		internal override void Draw(Graphics graphics)
 		{
+            base.DrawPoint(graphics);
 			var pen = new Pen(Color.Lime, 15);
 			graphics.DrawRectangle(pen, OX - Width / 2, OY - Height / 2, Width, Height);
 		}

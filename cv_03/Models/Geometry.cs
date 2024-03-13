@@ -28,14 +28,12 @@ namespace cv_03.Models
             _oy = oy;
         }
 
-        internal virtual void Draw(System.Drawing.Graphics graphics)
-        {
-
-        }
+        internal abstract void Draw(System.Drawing.Graphics graphics);
         internal void DrawPoint(System.Drawing.Graphics graphics)
         {
-            Pen pen = new Pen(System.Drawing.Color.Red, 5);
-            graphics.DrawLine(pen, )
+            Pen pen = new Pen(System.Drawing.Color.Red, 1);
+            graphics.DrawLine(pen, OX, OY - 5, OX, OY + 5);
+            graphics.DrawLine(pen, OX - 5, OY, OX + 5, OY);
         }
     }
 }

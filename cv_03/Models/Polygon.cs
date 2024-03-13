@@ -53,6 +53,7 @@ namespace cv_03.Models
 
         internal override void Draw(Graphics graphics)
         {
+            base.DrawPoint(graphics);
             var pen = new Pen(Color.Yellow, 15);
             graphics.DrawPolygon(pen, points.ToArray());
         }
