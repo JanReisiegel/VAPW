@@ -17,15 +17,29 @@ namespace cv_03.Models
 
         public Circle(int ox, int oy, int radius) : base(ox, oy)
         {
-            //OX = ox;
-            //OY = oy;
             _radius = radius;
         }
+
+        public Circle(int ox, int oy, int radius, System.Drawing.Pen pen) : this(ox, oy, radius)
+        {
+            Pen = pen;
+        }
+
+        public Circle(int ox, int oy, int radius, System.Drawing.Color penColor, int penWidth)
+            : this(ox, oy, radius, new Pen(penColor, penWidth)) { }
+        public Circle(int ox, int oy, int radius, Pen pen, System.Drawing.Color fillColor)
+            : this(ox, oy, radius, pen)
+        {
+            FillColor = fillColor;
+        }
+
+        public Circle(int ox, int oy, int radius, System.Drawing.Color penColor, int penWidth, Color fillColor)
+    : this(ox, oy, radius, new Pen(penColor, 1)) { }
 
         internal override void Draw(Graphics graphics)
         {
             base.DrawPoint(graphics);
-			graphics.DrawEllipse(new Pen(Color.Aqua, 15), OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
+			graphics.DrawEllipse(Pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
         }
     }
 }

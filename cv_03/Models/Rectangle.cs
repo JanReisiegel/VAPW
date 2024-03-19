@@ -27,17 +27,27 @@ namespace cv_03.Models
 
         public Rectangle(int x1, int y1, int x2, int y2) :base((x1 + x2) / 2, (y2 + y1) / 2)
         {
-			//OX = (x1 + x2) / 2;
-			//OY = (y2 + y1) / 2;
 			_width = Math.Abs(x2 - x1);
 			_height = Math.Abs(y2 - y1);
         }
+        public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Pen pen) : this(x1, y1, x2, y2)
+        {
+            Pen = pen;
+        }
+        public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Color penColor, int penWidth)
+            : this(x1, y1, x2, y2, new System.Drawing.Pen(penColor, penWidth)) { }
+        public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Pen pen, System.Drawing.Color fillColor)
+            : this(x1, y1, x2, y2, pen)
+        {
+            FillColor = fillColor;
+        }
+        public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Color penColor, int penWidth, System.Drawing.Color fillColor)
+            : this(x1, y1, x2, y2, new System.Drawing.Pen(penColor, penWidth), fillColor) { }
 
 		internal override void Draw(Graphics graphics)
 		{
             base.DrawPoint(graphics);
-			var pen = new Pen(Color.Lime, 15);
-			graphics.DrawRectangle(pen, OX - Width / 2, OY - Height / 2, Width, Height);
+			graphics.DrawRectangle(Pen, OX - Width / 2, OY - Height / 2, Width, Height);
 		}
     }
 }

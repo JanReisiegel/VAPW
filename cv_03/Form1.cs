@@ -10,6 +10,7 @@ namespace cv_03
         //List<Rectangle> rectangles = new List<Rectangle>();
         List<Geometry> geometries = new List<Geometry>();
         List<Point> points = new List<Point>();
+        Pen pen = new Pen(Color.Black, 1);
         public Form1()
         {
             InitializeComponent();
@@ -57,13 +58,13 @@ namespace cv_03
                 if (comboBox1.SelectedItem.ToString() == nameof(Circle))
                 {
                     geometries.Add(new Circle(points[0].X, points[0].Y,
-                        (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2))));
+                        (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)), new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
                     points.Clear();
                     Invalidate();
                 }
                 else if (comboBox1.SelectedItem.ToString() == nameof(Rectangle))
                 {
-                    geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y));
+                    geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
                     points.Clear();
                     Invalidate();
                 }
@@ -73,7 +74,7 @@ namespace cv_03
                 && comboBox1.SelectedItem != null
                 && comboBox1.SelectedItem.ToString() == nameof(Polygon))
             {
-                geometries.Add(new Polygon(points));
+                geometries.Add(new Polygon(points, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
                 points.Clear();
                 Invalidate();
             }
@@ -83,6 +84,20 @@ namespace cv_03
         {
             points.Clear();
             Invalidate();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_DoubleClick(object sender, EventArgs e)
+        {
+            var dialog = colorDialog1.ShowDialog();
+            if (dialog == DialogResult.OK)
+            {
+                panel1.BackColor = colorDialog1.Color;
+            }
         }
     }
 }
