@@ -38,19 +38,14 @@ namespace cv_03.Models
         internal override void Draw(Graphics graphics)
         {
             base.Draw(graphics);
-            this.DrawOrigin(graphics);
-        }
-        internal override void DrawOrigin(Graphics graphics)
-        {
-			graphics.DrawEllipse(Pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
+            graphics.DrawEllipse(Pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
         }
 
         internal override void DrawHover(Graphics graphics)
         {
-            this.DrawOrigin(graphics);
-            Pen pen = new Pen(System.Drawing.Color.Red, 10);
+            Pen pen = new Pen(System.Drawing.Color.Gray, 1);
             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-            graphics.DrawRectangle(pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
+            graphics.DrawRectangle(pen, OX - Radius - 2 - Pen.Width, OY - Radius - 2 - Pen.Width, 2 * Radius + 4 + (Pen.Width * 2), 2 * Radius + 4 + (Pen.Width * 2));
         }
     }
 }

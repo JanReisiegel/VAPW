@@ -36,18 +36,27 @@ namespace cv_03.Models
         {
             base.Draw(graphics);
 
-            this.DrawOrigin(graphics);
-        }
-        internal override void DrawOrigin(Graphics graphics)
-        {
             graphics.DrawPolygon(Pen, points.ToArray());
         }
         internal override void DrawHover(Graphics graphics)
         {
-            this.DrawOrigin(graphics);
-            Pen pen = new Pen(System.Drawing.Color.Red, 1);
+            Pen pen = new Pen(System.Drawing.Color.Gray, 1);
             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-            graphics.DrawRectangle(pen, points.Min(p => p.X), points.Min(p => p.Y), points.Max(p => p.X), points.Max(p => p.Y));
+            var ltx = points.Min(p => p.X);
+            var lty = points.Min(p => p.Y);
+            var rbx = points.Max(p => p.X);
+            var rby = points.Max(p => p.Y);
+            graphics.DrawRectangle(pen, ltx - 2 - Pen.Width, lty - 2 - Pen.Width, rbx - ltx + 4 + (Pen.Width * 2), rby - lty + 4 + (Pen.Width * 2));
+        }
+
+        internal override void MoveTo(Point point)
+        {
+            points.ForEach(p =>
+            {
+                p.X += point.X - OX;
+                p.Y += point.Y - OY;
+            });
+            base.MoveTo(point);
         }
     }
 }

@@ -1,4 +1,5 @@
 using cv_03.Models;
+using System.Windows.Forms;
 using Rectangle = cv_03.Models.Rectangle;
 
 namespace cv_03
@@ -31,7 +32,7 @@ namespace cv_03
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            geometries.ForEach(g => g.DrawOrigin(e.Graphics));
+            geometries.ForEach(g => g.Draw(e.Graphics));
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -41,46 +42,41 @@ namespace cv_03
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            if(geometries.Count() != 0)
+            selectedGeometry = geometries.Where(g => g.Selected).FirstOrDefault();
+
+            if(selectedGeometry == null)
             {
-                foreach (var g in geometries)
+                if (e.Button == MouseButtons.Left)
                 {
-                    if (e.Location.X >= g.OX - 10 && e.Location.X <= g.OX + 10 && e.Location.Y <= g.OY +10 && e.Location.Y >= g.OY - 10)
+                    points.Add(e.Location);
+                }
+                if (points.Count == 2 && comboBox1.SelectedItem != null)
+                {
+                    if (comboBox1.SelectedItem.ToString() == nameof(Circle))
                     {
-                        selectedGeometry = g;
-                        break;
+                        geometries.Add(new Circle(points[0].X, points[0].Y,
+                            (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)), new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
+                        points.Clear();
+                        Invalidate();
+                    }
+                    else if (comboBox1.SelectedItem.ToString() == nameof(Rectangle))
+                    {
+                        geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
+                        points.Clear();
+                        Invalidate();
                     }
                 }
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                points.Add(e.Location);
-            }
-            if (points.Count == 2 && comboBox1.SelectedItem != null)
-            {
-                if (comboBox1.SelectedItem.ToString() == nameof(Circle))
+                else if (points.Count > 2
+                    && e.Button == MouseButtons.Right
+                    && comboBox1.SelectedItem != null
+                    && comboBox1.SelectedItem.ToString() == nameof(Polygon))
                 {
-                    geometries.Add(new Circle(points[0].X, points[0].Y,
-                        (int)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)), new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
-                    points.Clear();
-                    Invalidate();
-                }
-                else if (comboBox1.SelectedItem.ToString() == nameof(Rectangle))
-                {
-                    geometries.Add(new Rectangle(points[0].X, points[0].Y, points[1].X, points[1].Y, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
+                    geometries.Add(new Polygon(points, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
                     points.Clear();
                     Invalidate();
                 }
             }
-            else if (points.Count > 2
-                && e.Button == MouseButtons.Right
-                && comboBox1.SelectedItem != null
-                && comboBox1.SelectedItem.ToString() == nameof(Polygon))
-            {
-                geometries.Add(new Polygon(points, new Pen(panel1.BackColor, (int)numericUpDown1.Value)));
-                points.Clear();
-                Invalidate();
-            }
+            
         }
 
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)

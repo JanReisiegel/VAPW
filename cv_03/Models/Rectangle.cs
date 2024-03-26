@@ -44,21 +44,17 @@ namespace cv_03.Models
         public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Color penColor, int penWidth, System.Drawing.Color fillColor)
             : this(x1, y1, x2, y2, new System.Drawing.Pen(penColor, penWidth), fillColor) { }
 
-		internal override void DrawOrigin(Graphics graphics)
-		{
-			graphics.DrawRectangle(Pen, OX - Width / 2, OY - Height / 2, Width, Height);
-		}
         internal override void Draw(Graphics graphics)
         {
             base.Draw(graphics);
+            graphics.DrawRectangle(Pen, OX - Width / 2, OY - Height / 2, Width, Height);
 
-            this.DrawOrigin(graphics);
         }
         internal override void DrawHover(Graphics graphics)
         {
-            Pen pen = new Pen(System.Drawing.Color.Red, 1);
+            Pen pen = new Pen(System.Drawing.Color.Black, 1);
             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-            graphics.DrawRectangle(pen, (OX - Width / 2) - 2, (OY - Height / 2) - 2, Width + 2, Height + 2);
+            graphics.DrawRectangle(pen, (OX - Width / 2) - 2 - Pen.Width, (OY - Height / 2) - 2 - Pen.Width, Width + 4 + (Pen.Width * 2), Height + 4 + (Pen.Width * 2));
         }
     }
 }

@@ -55,13 +55,12 @@ namespace cv_03.Models
 
         internal virtual void Draw(Graphics graphics)
         {
-            //graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawPoint(graphics);
             if (Selected)
                 DrawHover(graphics);
                 
         }
-        internal abstract void DrawOrigin(System.Drawing.Graphics graphics);
         internal abstract void DrawHover(System.Drawing.Graphics graphics);
         internal void DrawPoint(System.Drawing.Graphics graphics)
         {
@@ -71,7 +70,7 @@ namespace cv_03.Models
 
         }
 
-        internal void MoveTo(Point point)
+        internal virtual void MoveTo(Point point)
         {
             OX = point.X;
             OY = point.Y;
