@@ -15,7 +15,7 @@ namespace cv_03.Models
 			private set { _radius = value; }
 		}
 
-        public Circle(int ox, int oy, int radius) : base(ox, oy)
+        public Circle(int ox, int oy, int radius) : base(ox, oy, false)
         {
             _radius = radius;
         }
@@ -35,11 +35,22 @@ namespace cv_03.Models
 
         public Circle(int ox, int oy, int radius, System.Drawing.Color penColor, int penWidth, Color fillColor)
     : this(ox, oy, radius, new Pen(penColor, 1)) { }
-
         internal override void Draw(Graphics graphics)
         {
-            base.DrawPoint(graphics);
+            base.Draw(graphics);
+            this.DrawOrigin(graphics);
+        }
+        internal override void DrawOrigin(Graphics graphics)
+        {
 			graphics.DrawEllipse(Pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
+        }
+
+        internal override void DrawHover(Graphics graphics)
+        {
+            this.DrawOrigin(graphics);
+            Pen pen = new Pen(System.Drawing.Color.Red, 10);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            graphics.DrawRectangle(pen, OX - Radius, OY - Radius, 2 * Radius, 2 * Radius);
         }
     }
 }

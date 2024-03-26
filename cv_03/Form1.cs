@@ -5,12 +5,10 @@ namespace cv_03
 {
     public partial class Form1 : Form
     {
-        //Circle c1, c2;
-        //List<Circle> circles = new List<Circle>();
-        //List<Rectangle> rectangles = new List<Rectangle>();
         List<Geometry> geometries = new List<Geometry>();
         List<Point> points = new List<Point>();
         Pen pen = new Pen(Color.Black, 1);
+        Geometry? selectedGeometry = null;
         public Form1()
         {
             InitializeComponent();
@@ -33,11 +31,7 @@ namespace cv_03
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            /*c1?.Draw(e.Graphics);
-            c2?.Draw(e.Graphics);*/
-            //circles.ForEach(c => c.Draw(e.Graphics));
-            //rectangles.ForEach(r => r.Draw(e.Graphics));
-            geometries.ForEach(g => g.Draw(e.Graphics));
+            geometries.ForEach(g => g.DrawOrigin(e.Graphics));
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -47,12 +41,21 @@ namespace cv_03
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
+            if(geometries.Count() != 0)
+            {
+                foreach (var g in geometries)
+                {
+                    if (e.Location.X >= g.OX - 10 && e.Location.X <= g.OX + 10 && e.Location.Y <= g.OY +10 && e.Location.Y >= g.OY - 10)
+                    {
+                        selectedGeometry = g;
+                        break;
+                    }
+                }
+            }
             if (e.Button == MouseButtons.Left)
             {
                 points.Add(e.Location);
             }
-
-
             if (points.Count == 2 && comboBox1.SelectedItem != null)
             {
                 if (comboBox1.SelectedItem.ToString() == nameof(Circle))
@@ -98,6 +101,35 @@ namespace cv_03
             {
                 panel1.BackColor = colorDialog1.Color;
             }
+        }
+
+        private void Form1_MouseHover(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+
+            if (selectedGeometry != null)
+            {
+                selectedGeometry.MoveTo(e.Location);
+            }
+            else
+            {
+                foreach (var g in geometries)
+                {
+                    var isNear = (e.Location.X >= g.OX - 10 && e.Location.X <= g.OX + 10 && e.Location.Y >= g.OY - 10 && e.Location.Y <= g.OY + 10);
+                    g.Selected = isNear;
+
+                }
+            }
+            Invalidate();
+        }
+
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            selectedGeometry = null;
         }
     }
 }

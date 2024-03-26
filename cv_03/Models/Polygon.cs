@@ -15,7 +15,7 @@ namespace cv_03.Models
             set { points = value; }
         }
 
-        public Polygon(List<Point> points) : base((int)points.Average(p => p.X), (int)points.Average(p => p.Y))
+        public Polygon(List<Point> points) : base((int)points.Average(p => p.X), (int)points.Average(p => p.Y), false)
         {
             points.ForEach(p => this.points.Add(p));
         }
@@ -32,42 +32,22 @@ namespace cv_03.Models
         }
         public Polygon(List<Point> points, System.Drawing.Color penColor, int penWidth, System.Drawing.Color fillColor)
             : this(points, new System.Drawing.Pen(penColor, penWidth), fillColor) { }
-
-        /* Metody pro získání středových souřadnic tvaru
-        public Polygon(List<Point> points) : base(GetOX(points), GetOY(points))
-        {
-            this.points = points;
-        }
-        
-        private static int GetOX(List<Point> points)
-        {
-            int sumX = 0;
-            int n = points.Count;
-
-            for (int i = 0; i < n; i++)
-            {
-                sumX += points[i].X;
-            }
-
-            return (sumX / n);
-        }
-        private static int GetOY(List<Point> points)
-        {
-            int sumY = 0;
-            int n = points.Count;
-
-            for (int i = 0; i < n; i++)
-            {
-                sumY += points[i].Y;
-            }
-
-            return (sumY / n);
-        }*/
-
         internal override void Draw(Graphics graphics)
         {
-            base.DrawPoint(graphics);
+            base.Draw(graphics);
+
+            this.DrawOrigin(graphics);
+        }
+        internal override void DrawOrigin(Graphics graphics)
+        {
             graphics.DrawPolygon(Pen, points.ToArray());
+        }
+        internal override void DrawHover(Graphics graphics)
+        {
+            this.DrawOrigin(graphics);
+            Pen pen = new Pen(System.Drawing.Color.Red, 1);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            graphics.DrawRectangle(pen, points.Min(p => p.X), points.Min(p => p.Y), points.Max(p => p.X), points.Max(p => p.Y));
         }
     }
 }

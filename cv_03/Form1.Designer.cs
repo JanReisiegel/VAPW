@@ -87,10 +87,14 @@
             Controls.Add(numericUpDown1);
             Controls.Add(comboBox1);
             Controls.Add(button1);
+            DoubleBuffered = true;
             Name = "Form1";
             Text = "Form1";
             Paint += Form1_Paint;
             MouseDown += Form1_MouseDown;
+            MouseHover += Form1_MouseHover;
+            MouseMove += Form1_MouseMove;
+            MouseUp += Form1_MouseUp;
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
         }

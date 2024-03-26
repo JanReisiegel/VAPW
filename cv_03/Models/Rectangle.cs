@@ -25,7 +25,7 @@ namespace cv_03.Models
             set { _width = value; }
         }
 
-        public Rectangle(int x1, int y1, int x2, int y2) :base((x1 + x2) / 2, (y2 + y1) / 2)
+        public Rectangle(int x1, int y1, int x2, int y2) :base((x1 + x2) / 2, (y2 + y1) / 2, false)
         {
 			_width = Math.Abs(x2 - x1);
 			_height = Math.Abs(y2 - y1);
@@ -44,10 +44,21 @@ namespace cv_03.Models
         public Rectangle(int x1, int y1, int x2, int y2, System.Drawing.Color penColor, int penWidth, System.Drawing.Color fillColor)
             : this(x1, y1, x2, y2, new System.Drawing.Pen(penColor, penWidth), fillColor) { }
 
-		internal override void Draw(Graphics graphics)
+		internal override void DrawOrigin(Graphics graphics)
 		{
-            base.DrawPoint(graphics);
 			graphics.DrawRectangle(Pen, OX - Width / 2, OY - Height / 2, Width, Height);
 		}
+        internal override void Draw(Graphics graphics)
+        {
+            base.Draw(graphics);
+
+            this.DrawOrigin(graphics);
+        }
+        internal override void DrawHover(Graphics graphics)
+        {
+            Pen pen = new Pen(System.Drawing.Color.Red, 1);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            graphics.DrawRectangle(pen, (OX - Width / 2) - 2, (OY - Height / 2) - 2, Width + 2, Height + 2);
+        }
     }
 }

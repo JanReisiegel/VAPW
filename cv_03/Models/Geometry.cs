@@ -37,19 +37,44 @@ namespace cv_03.Models
             set { _fillColor = value; }
         }
 
+        private bool _selected;
 
-        protected Geometry(int ox, int oy)
+        public bool Selected
+        {
+            get { return _selected; }
+            set { _selected = value; }
+        }
+
+
+        protected Geometry(int ox, int oy, bool selected)
         {
             _ox = ox;
             _oy = oy;
+            _selected = selected;
         }
 
-        internal abstract void Draw(System.Drawing.Graphics graphics);
+        internal virtual void Draw(Graphics graphics)
+        {
+            //graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            DrawPoint(graphics);
+            if (Selected)
+                DrawHover(graphics);
+                
+        }
+        internal abstract void DrawOrigin(System.Drawing.Graphics graphics);
+        internal abstract void DrawHover(System.Drawing.Graphics graphics);
         internal void DrawPoint(System.Drawing.Graphics graphics)
         {
             Pen pen = new Pen(Color.Black, 1);
             graphics.DrawLine(pen, OX, OY - 5, OX, OY + 5);
             graphics.DrawLine(pen, OX - 5, OY, OX + 5, OY);
+
+        }
+
+        internal void MoveTo(Point point)
+        {
+            OX = point.X;
+            OY = point.Y;
         }
     }
 }
