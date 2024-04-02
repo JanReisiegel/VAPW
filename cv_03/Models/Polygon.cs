@@ -51,11 +51,12 @@ namespace cv_03.Models
 
         internal override void MoveTo(Point point)
         {
+            
             points.ForEach(p =>
             {
-                p.X += point.X - OX;
-                p.Y += point.Y - OY;
+                p.Offset(point.X - OX, point.Y - OY);
             });
+
             base.MoveTo(point);
         }
     }
