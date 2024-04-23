@@ -1,4 +1,5 @@
 using Sim1;
+using System.Windows.Forms;
 
 namespace cv_07
 {
@@ -19,6 +20,10 @@ namespace cv_07
             Tank.OnTankStateChange += Tank_OnTankStateChange;
 
             Tank2 = new TankValves(10000);
+        }
+        private void Tank2_OnTankStateChange(object sender, double stateLitres, double statePercent)
+        {
+            changePanelBG(panel2, statePercent);
         }
 
         private void Tank_OnTankStateChange(object sender, double stateLitres, double statePercent)
@@ -72,13 +77,15 @@ namespace cv_07
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Tank.Dispose();
+            Tank2.Dispose();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            changeValveLabel(label4, Tank2.InletValveState);
-            changeValveLabel(label1, Tank2.OutletValveState);
-            //changePanelBG(panel2, Tank2.StateLitres);
+            label1.BackColor = Tank2.OutletValveState == ValveState.On ? Color.Green : Color.Red;
+            label4.BackColor = Tank2.InletValveState == ValveState.On ? Color.Green : Color.Red;
+            double stav = Tank2.StateLitres / (Tank2.CapacityLitres);
+            panel2.BackColor = Color.FromArgb((int)((stav) * 255), 0, 0, 255);
         }
     }
 }
